@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import { getMatchById, getRunesData, getHistoryMatches, getChampionById, getRuneById, getSpellIdByKey } from './requests';
-
+import {filterMatchData} from './helpers';
 import './App.css';
 
 function App() {
   const [matchList, setMatchList] =  useState({});
   return (
     <div className="App">
-      <button onClick={() => getHistoryMatches('Arikier', {endIndex: 5}).then(res => console.log(res))} >Get History Matches</button>
+      <button onClick={() => getHistoryMatches('Arikier', {endIndex: 5}).then(res => getMatchById(res[0].gameId).then(res => filterMatchData(res, 'Arikier', 'pt_BR').then(res => console.log(res))))} >Get History Matches</button>
       <button onClick={() => (getRuneById(8446, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>
       <button onClick={() => (getRuneById(8439, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>
       <button onClick={() => (getRuneById(8473, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>

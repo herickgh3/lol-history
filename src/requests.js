@@ -52,10 +52,10 @@ export const getProfileIconImage = profileIconId => `http://ddragon.leagueoflege
 
 //---- SPELLS ----//
 // json
-export const getSpellsData = () => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/summoner.json`);
+export const getSpellsData = (language) => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/summoner.json`);
 
-export const getSpellById = (spellId) => getSpellsData(language).then(res => res.data.data[spellId]);
-export const getSpellIdByKey = (key) => getSpellsData(language).then(res => res.data.data[Object.keys(res.data.data).filter(spell => res.data.data[spell].key === key)[0]].id);
+export const getSpellById = (spellId, language) => getSpellsData(language).then(res => res.data.data[spellId]);
+export const getSpellIdByKey = (key, language) => getSpellsData(language).then(res => res.data.data[Object.keys(res.data.data).filter(spell => res.data.data[spell].key === '' + key)[0]].id);
 
 // images
 export const getSummonerSpellsImage = (spellId) => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/spell/${spellId}.png`;
@@ -69,7 +69,7 @@ export const getRuneById = (runeId, language) => getRunesData(language).then(res
 //---- ITEMS ----//
 // json
 export const getItemsData = () => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/item.json`);
-export const getItemByID = itemId => getItemsData('pt_BR').data[itemId];
+export const getItemById = itemId => getItemsData('pt_BR').then(res => res.data.data[itemId]);
 
 // imagens
 export const getItemImage = itemId => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/item/${itemId}.png`
