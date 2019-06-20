@@ -1,11 +1,14 @@
 
-import { getMatchById, getSummonerByName, getSpellIdByKey, getProfileIconImage, getSpellById, getRuneById, getItemById, getItemImage, getChampionImageById, getChampionById } from './requests';
+import { getSpellIdByKey, getProfileIconImage, getSpellById, getRuneById, getItemById } from './requests';
 
 
 export const filterMatchData = async (matchData, summonerName, language) => {
-    // const accountId = await getSummonerByName(summonerName).then(res => res.accountId);
+    // pega o Id do invocador
     const summonerParticipantId = matchData.participantIdentities.filter(participant => participant.player.summonerName === summonerName)[0].participantId;
+    // pega os stats do invocador na partida
     const sumStats = matchData.participants.filter(participant => participant.participantId === summonerParticipantId)[0];
+
+    // desconstrução do objeto
     const {
         win,
         kills,
@@ -25,13 +28,19 @@ export const filterMatchData = async (matchData, summonerName, language) => {
         perk0,
         perk4,
     } = sumStats.stats;
+
+    // pega os dados do invocador
     const getParticipantIdentity = (participantId, matchData) => matchData.participantIdentities.filter(participant => participant.participantId === participantId)[0].player
+
+    // pega os times
     const getTeams = (matchData, summonerTeam) => matchData.participants
         .filter(participant => summonerTeam ? participant.teamId === sumStats.teamId : participant.teamId !== sumStats.teamId)
         .map(participant => ({ summonerName: getParticipantIdentity(participant.participantId, matchData).summonerName, imageUrl: getProfileIconImage(getParticipantIdentity(participant.participantId, matchData).profileIcon) }));
+    
     const { championId, spell1Id, spell2Id } = sumStats;
     const { gameDuration, mapId, gameType } = matchData;
     const { role } = sumStats.timeline;
+
     const team1 = getTeams(matchData, true);
     const team2 = getTeams(matchData, false);
 
