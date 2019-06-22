@@ -4,7 +4,7 @@ import axios from 'axios';
 // JSON
 
 // URL CONFIG
-const API_KEY = 'RGAPI-7738f0ec-cbae-473b-bba0-1958ce727612';
+const API_KEY = 'RGAPI-6b6ac3c0-3015-438b-b49d-64036ea477bd';
 const CORS = 'https://cors-anywhere.herokuapp.com/';
 const language = 'pt_BR';
 const requestUrl = (request, params) => {
@@ -32,33 +32,33 @@ export const getMatchByMatchId = matchId => lolRequest(`/lol/match/v4/timelines/
 
 //---- CHAMPION ----//
 // json
-export const getChampionByName = (championName) => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/champion/${championName}.json`);
-export const getChampionById = (championId, language) => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/champion.json`).then(
+export const getChampionByName = (championName) => axios.get(`http://ddragon.leagueoflegends.com/cdn/9.12.1/data/${language}/champion/${championName}.json`);
+export const getChampionById = (championId, language) => axios.get(`http://ddragon.leagueoflegends.com/cdn/9.12.1/data/${language}/champion.json`).then(
     res => {
         const championCollection = res.data.data;
         const championName = Object.keys(championCollection)
-        .filter(champName => +championCollection[champName].key === championId); // get champ who has same id as passed
-        return championCollection[championName];
+        .filter(champName => +championCollection[champName].key === championId);// get champ who has same id as passed
+        return championCollection[championName[0]];
     }
 )
 // images
-export const getChampionImage = (championName) => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/${championName}.png`;
-export const getChampionImageById = (championId) => getChampionById(championId, 'pt_BR').then(res => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/${res.name}.png`)
+export const getChampionImage = (championName) => `http://ddragon.leagueoflegends.com/cdn/9.12.1/img/champion/${championName}.png`;
+export const getChampionImageById = (championId, language) => getChampionById(championId, language).then(res => `http://ddragon.leagueoflegends.com/cdn/9.12.1/img/champion/${res.image.full}`)
 export const getChampionLoadingImage = (championName, skinId) => `http://ddragon.leagueoflegends.com/cdn/img/champion/loading/${championName}_${skinId}.jpg`;
 export const getChampionSplashImage = (championName, skinId) => `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_${skinId}.jpg`;
 
 // PROFILE ICON
-export const getProfileIconImage = profileIconId => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/${profileIconId}.png`
+export const getProfileIconImage = profileIconId => `http://ddragon.leagueoflegends.com/cdn/9.12.1/img/profileicon/${profileIconId}.png`
 
 //---- SPELLS ----//
 // json
-export const getSpellsData = (language) => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/summoner.json`);
+export const getSpellsData = (language) => axios.get(`http://ddragon.leagueoflegends.com/cdn/9.12.1/data/${language}/summoner.json`);
 
 export const getSpellById = (spellId, language) => getSpellsData(language).then(res => res.data.data[spellId]);
 export const getSpellIdByKey = (key, language) => getSpellsData(language).then(res => res.data.data[Object.keys(res.data.data).filter(spell => res.data.data[spell].key === '' + key)[0]].id);
 
 // images
-export const getSummonerSpellsImage = (spellId) => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/spell/${spellId}.png`;
+export const getSummonerSpellsImage = (spellId) => `http://ddragon.leagueoflegends.com/cdn/9.12.1/img/spell/${spellId}.png`;
 
 
 //  RUNES
@@ -68,11 +68,11 @@ export const getRuneById = (runeId, language) => getRunesData(language).then(res
 
 //---- ITEMS ----//
 // json
-export const getItemsData = () => axios.get(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/${language}/item.json`);
-export const getItemById = itemId => getItemsData('pt_BR').then(res => res.data.data[itemId]);
+export const getItemsData = () => axios.get(`http://ddragon.leagueoflegends.com/cdn/9.12.1/data/${language}/item.json`);
+export const getItemById = itemId => itemId !== 0 ? getItemsData('pt_BR').then(res => res.data.data[itemId]) : {name: ''};
 
 // imagens
-export const getItemImage = itemId => `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/item/${itemId}.png`
+export const getItemImage = itemId => `http://ddragon.leagueoflegends.com/cdn/9.12.1/img/item/${itemId}.png`
 
 // GET HISTORY DATA
 export const getHistoryMatches = (summonerName, params) => getSummonerByName(summonerName)

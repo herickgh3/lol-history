@@ -1,17 +1,19 @@
-import React, {useState} from 'react';
-import { getMatchById, getRunesData, getHistoryMatches, getChampionById, getRuneById, getSpellIdByKey } from './requests';
-import {filterMatchData} from './helpers';
+import React, { useState, Suspense, useRef } from 'react';
+import { useGlobal, setGlobal } from 'reactn';
+import { getHistoryMatches, getChampionById, getRuneById } from './requests';
 import './App.css';
 
+const HistoryMatchCard = React.lazy(() => import('./Components/HistoryMatchCard/HistoryMatchCard'));
+
 function App() {
-  const [matchList, setMatchList] =  useState({});
+  const [matchList, setMatchList] = useState([]);
+  const [summonerName] = useGlobal('summonerName');
   return (
     <div className="App">
-      <button onClick={() => getHistoryMatches('Arikier', {endIndex: 5}).then(res => getMatchById(res[0].gameId).then(res => filterMatchData(res, 'Arikier', 'pt_BR').then(res => console.log(res))))} >Get History Matches</button>
-      <button onClick={() => (getRuneById(8446, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>
-      <button onClick={() => (getRuneById(8439, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>
-      <button onClick={() => (getRuneById(8473, 'pt_BR')).then(res => console.log(res))} >Get Rune By Id</button>
-      <button onClick={() => getChampionById(157, 'pt_BR').then(res => console.log(res))} >Get Spells data</button>
+      <input type="text" name="summonerName" placeholder="nome do invocador" value={summonerName} onChange={ e => {setGlobal({summonerName: e.currentTarget.value})}} />
+
+      <button onClick={() => getHistoryMatches(summonerName, { endIndex: 5 }).then(res => setMatchList(res.map(match => match.gameId)))} >Get History Matches</button>
+          { matchList && matchList.map(matchId =>  <Suspense key={matchId} fallback={<div>Loading...</div>}><HistoryMatchCard key={matchId + '--card'}matchId={matchId} /> </Suspense>)}
     </div>
   );
 }

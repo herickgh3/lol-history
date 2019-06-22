@@ -1,1 +1,6 @@
-/* No CSS *//*# sourceMappingURL=HistoryMatchCard.css.map */
+.spells-runes > div > div {
+  height: 30px;
+  width: 30px;
+  background-size: cover;
+}
+/*# sourceMappingURL=HistoryMatchCard.css.map */

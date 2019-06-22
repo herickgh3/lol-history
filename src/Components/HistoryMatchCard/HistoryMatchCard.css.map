@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "",
+    "mappings": "AAAA,AAAA,aAAa,GAAG,GAAG,GAAG,GAAG,CAAC;EACtB,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,eAAe,EAAE,KAAK;CAAG",
     "sources": [
         "HistoryMatchCard.sass"
     ],
